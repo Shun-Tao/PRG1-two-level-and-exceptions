@@ -16,8 +16,9 @@ count = 0
 rejected = []
 
 for line in lines:
-    try:
+    try:     
         station, millimetres_text = line.strip().split(",")
+
         millimetres = int(millimetres_text)
     except ValueError as problem:
         rejected.append(f"{line.strip()}  ({problem})")
@@ -36,3 +37,10 @@ if rejected:
     print("Rejected lines:")
     for line in rejected:
         print(f"  {line}")
+
+    with open("rejected.txt","w") as f:
+        for line in rejected:
+            f.write(line+"\n")
+
+if len(rejected) > len(lines)/5:
+    raise ValueError("Too many invalid records")

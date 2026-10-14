@@ -1,0 +1,2 @@
+Norwich,forty-seven  (invalid literal for int() with base 10: 'forty-seven')
+Aberdeen  (not enough values to unpack (expected 2, got 1))

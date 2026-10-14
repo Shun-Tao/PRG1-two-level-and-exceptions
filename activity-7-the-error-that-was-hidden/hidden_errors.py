@@ -25,7 +25,7 @@ def battery_percent(bike):
     try:
         return int(bike["battery"])
     except ValueError:
-        return 0
+        return None
 
 
 def needs_collecting(fleet):
@@ -33,25 +33,23 @@ def needs_collecting(fleet):
     flagged = []
     for bike in fleet:
         try:
-            if battery_percent(bike) <= LOW_BATTERY:
+            battery = battery_percent(bike)
+
+            if battery is not None and battery <= LOW_BATTERY:
                 flagged.append(bike["id"])
-        except:
-            pass
+        except KeyError as e:
+            print(f"{bike['id']} does not have a valid battery reading")
     return flagged
 
 
 def stations_covered(fleet):
     """Every station that has at least one bike."""
-    try:
-        stations = []
-        for bike in fleet:
-            if bike["station"] not in stations:
-                stations.append(bike["station"])
-            if bike["battery"] == "":
-                stations.remove(bike["station"])
-        return stations
-    except Exception:
-        return []
+
+    stations = []
+    for bike in fleet:
+        if bike["station"] not in stations:
+            stations.append(bike["station"])
+    return stations
 
 
 print(f"Fleet size: {len(fleet)}")
